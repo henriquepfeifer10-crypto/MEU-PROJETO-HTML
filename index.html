@@ -1,66 +1,160 @@
-<!--
-
-                            Online HTML Compiler.
-                Code, Compile, Run and Debug HTML program online.
-Write your code in this editor and press "Run" button to execute it.
-
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para o Meu Amor 💖</title>
-    <!-- Tailwind CSS para estilização rápida e bonita -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Biblioteca QRCode.js para gerar o código -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <title>Contagem Regressiva do Luffy</title>
     <style>
-        @keyframes pulse-slow {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.1); }
+        /* Estilização Geral e Fundo */
+        body {
+            font-family: 'Courier New', Courier, monospace; /* Fonte estilo pirata */
+            background-color: #f0f0f0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Evita barras de rolagem durante o pulo */
         }
-        .animate-pulse-slow {
-            animation: pulse-slow 1.5s infinite ease-in-out;
+
+        /* Container Principal */
+        .container {
+            text-align: center;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            position: relative;
         }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        /* Estilo do Contador */
+        #contador {
+            font-size: 3em;
+            font-weight: bold;
+            color: #e74c3c; /* Vermelho One Piece */
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+
+        /* Botão de Descartar */
+        .btn-descartar {
+            background-color: #f1c40f; /* Amarelo Chapéu de Palha */
+            color: #333;
+            border: none;
+            padding: 15px 30px;
+            font-size: 1.2em;
+            font-weight: bold;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 0 #c49b0c;
+            transition: all 0.1s;
+        }
+
+        .btn-descartar:active {
+            box-shadow: 0 2px 0 #c49b0c;
+            transform: translateY(3px);
+        }
+
+        /* Imagem do Luffy */
+        .luffy {
+            width: 150px;
+            position: absolute;
+            bottom: -160px; /* Escondido abaixo do container inicialmente */
+            left: 50%;
+            transform: translateX(-50%);
+            transition: transform 0.1s ease-out; /* Transição suave para o pulo */
+            z-index: -1; /* Fica atrás do container */
+        }
+
+        /* Classe de Animação do Pulo (ativada pelo JS) */
+        .luffy.pular {
+            animation: pularAnimacao 1s ease-out;
+        }
+
+        @keyframes pularAnimacao {
+            0% { transform: translate(-50%, 0); }
+            30% { transform: translate(-50%, -250px) rotate(-10deg); } /* Ponto mais alto */
+            100% { transform: translate(-50%, 0); } /* Volta para baixo */
+        }
+
     </style>
 </head>
-<body class="bg-pink-50 min-h-screen flex items-center justify-center p-4">
+<body>
 
-    <div class="bg-white rounded-3xl shadow-2xl p-8 max-w-sm w-full text-center border-4 border-pink-200">
-        <!-- Ícone do Ursinho com Coração (Emoji estilizado) -->
-        <div class="relative inline-block mb-4">
-            <div class="text-6xl animate-pulse-slow select-none">
-                
-            </div>
-            <div class="absolute -top-2 -right-2 text-2xl animate-bounce">
-                ❤️
-            </div>
-        </div>
+    <div class="container">
+        <h1>Faltam para o Feriado:</h1>
+        
+        <!-- Área onde os dias serão exibidos -->
+        <div id="contador">-- dias</div>
 
-        <h1 class="text-2xl font-bold text-pink-600 mb-2"> leia aqui </h1>
-        <p class="text-gray-500 text-sm mb-6">Escaneie o QR Code abaixo para ver a surpresa!</p>
+        <!-- Botão para descartar o dia -->
+        <button class="btn-descartar" id="btnDescartar">DESCARTAR O DIA!</button>
 
-        <!-- Container onde o QR Code será gerado -->
-        <div class="bg-pink-50 p-4 rounded-2xl inline-block border-2 border-dashed border-pink-300 mb-6 shadow-inner">
-            <div id="qrcode" class="flex justify-center"></div>
-        </div>
-
-        <div class="text-pink-500 font-medium text-lg">
-              Por favor ✨
-        </div>
+        <!-- Imagem do Luffy (substitua o link pela imagem desejada) -->
+        <img src="https://i.imgur.com/vH5U0Wp.png" alt="Luffy Pulando" class="luffy" id="luffyImg">
     </div>
 
     <script>
-        // Gera o QR Code com o texto "Te amo"
-        const qrcode = new QRCode(document.getElementById("qrcode"), {
-            text: "Te amo",
-            width: 180,
-            height: 180,
-            colorDark: "#db2777", // Cor rosa escuro para combinar
-            colorLight: "#fdf2f8", // Fundo combinando com o tema
-            correctLevel: QRCode.CorrectLevel.H
-        });
-    </script>
+        // --- CONFIGURAÇÃO ---
+        // Defina aqui a data do feriado (Formato: Ano-Mês-Dia)
+        const dataFeriado = new Date('12-10-2026'); 
+        // --------------------
 
+        const contadorElemento = document.getElementById('contador');
+        const btnDescartar = document.getElementById('btnDescartar');
+        const luffyImg = document.getElementById('luffyImg');
+
+        function calcularDiasRestantes() {
+            const hoje = new Date();
+            const diferencaTempo = dataFeriado - hoje;
+            
+            // Converte milissegundos em dias
+            const diasRestantes = Math.ceil(diferencaTempo / (1000 * 60 * 60 * 24));
+            
+            return diasRestantes;
+        }
+
+        function atualizarContador() {
+            const dias = calcularDiasRestantes();
+            if (dias > 11) {
+                contadorElemento.innerText = `${dias} dias`;
+            } else if (dias === 1) {
+                contadorElemento.innerText = `É AMANHÃ!`;
+            } else if (dias === 11) {
+                contadorElemento.innerText = `É HOJE! 🎉`;
+            } else {
+                contadorElemento.innerText = `O feriado já passou!`;
+            }
+        }
+
+        // Evento de clique no botão
+        btnDescartar.addEventListener('click', () => {
+            // 1. Faz o Luffy pular adicionando a classe de animação
+            luffyImg.classList.add('pular');
+
+            // 2. Remove a classe após a animação terminar (1 segundo) para poder repetir
+            setTimeout(() => {
+                luffyImg.classList.remove('pular');
+            }, 1000);
+
+            // 3. Opcional: Diminuir o contador visualmente (apenas para efeito)
+            // Nota: Isso não muda a data real do feriado.
+            let diasAtuais = calcularDiasRestantes();
+            if (diasAtuais > 0) {
+                contadorElemento.innerText = `${diasAtuais - 1} dias (uhu!)`;
+                // Retorna ao valor real após 1.5 segundos
+                setTimeout(atualizarContador, 1500);
+            }
+        });
+
+        // Inicializa o contador ao carregar a página
+        atualizarContador(11);
+
+    </script>
 </body>
 </html>
