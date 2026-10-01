@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+      <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
@@ -7,14 +8,14 @@
     <style>
         /* Estilização Geral e Fundo */
         body {
-            font-family: 'Courier New', Courier, monospace; /* Fonte estilo pirata */
+            font-family: 'Courier New', Courier, monospace;
             background-color: #f0f0f0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden; /* Evita barras de rolagem durante o pulo */
+            overflow: hidden; 
         }
 
         /* Container Principal */
@@ -36,14 +37,14 @@
         #contador {
             font-size: 3em;
             font-weight: bold;
-            color: #e74c3c; /* Vermelho One Piece */
+            color: #e74c3c; 
             margin-bottom: 30px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
         }
 
         /* Botão de Descartar */
         .btn-descartar {
-            background-color: #f1c40f; /* Amarelo Chapéu de Palha */
+            background-color: #f1c40f; 
             color: #333;
             border: none;
             padding: 15px 30px;
@@ -60,15 +61,15 @@
             transform: translateY(3px);
         }
 
-        /* Imagem do Luffy */
+        /* Imagem do Luffy carregada junto com o site */
         .luffy {
             width: 150px;
             position: absolute;
-            bottom: -160px; /* Escondido abaixo do container inicialmente */
+            bottom: -160px; 
             left: 50%;
             transform: translateX(-50%);
-            transition: transform 0.1s ease-out; /* Transição suave para o pulo */
-            z-index: -1; /* Fica atrás do container */
+            transition: transform 0.1s ease-out; 
+            z-index: -1; 
         }
 
         /* Classe de Animação do Pulo (ativada pelo JS) */
@@ -78,8 +79,8 @@
 
         @keyframes pularAnimacao {
             0% { transform: translate(-50%, 0); }
-            30% { transform: translate(-50%, -250px) rotate(-10deg); } /* Ponto mais alto */
-            100% { transform: translate(-50%, 0); } /* Volta para baixo */
+            30% { transform: translate(-50%, -250px) rotate(-10deg); } 
+            100% { transform: translate(-50%, 0); } 
         }
 
     </style>
@@ -95,14 +96,15 @@
         <!-- Botão para descartar o dia -->
         <button class="btn-descartar" id="btnDescartar">DESCARTAR O DIA!</button>
 
-        <!-- Imagem do Luffy (substitua o link pela imagem desejada) -->
-        <img src="https://i.imgur.com/vH5U0Wp.png" alt="Luffy Pulando" class="luffy" id="luffyImg">
+        <!-- Imagem do Luffy buscando do arquivo local que você fará o upload -->
+        <img src="luffy.png" alt="Luffy Pulando" class="luffy" id="luffyImg">
     </div>
 
     <script>
         // --- CONFIGURAÇÃO ---
-        // Defina aqui a data do feriado (Formato: Ano-Mês-Dia)
-        const dataFeriado = new Date('12-10-2026'); 
+        // Data ajustada para 12 de Outubro de 2026. 
+        // O T00:00:00 garante que a contagem seja exata para a meia-noite do dia no fuso horário correto.
+        const dataFeriado = new Date('2026-10-12T00:00:00'); 
         // --------------------
 
         const contadorElemento = document.getElementById('contador');
@@ -121,11 +123,11 @@
 
         function atualizarContador() {
             const dias = calcularDiasRestantes();
-            if (dias > 11) {
+            if (dias > 1) {
                 contadorElemento.innerText = `${dias} dias`;
             } else if (dias === 1) {
                 contadorElemento.innerText = `É AMANHÃ!`;
-            } else if (dias === 11) {
+            } else if (dias === 0) {
                 contadorElemento.innerText = `É HOJE! 🎉`;
             } else {
                 contadorElemento.innerText = `O feriado já passou!`;
@@ -142,8 +144,7 @@
                 luffyImg.classList.remove('pular');
             }, 1000);
 
-            // 3. Opcional: Diminuir o contador visualmente (apenas para efeito)
-            // Nota: Isso não muda a data real do feriado.
+            // 3. Efeito de diminuir o dia visualmente
             let diasAtuais = calcularDiasRestantes();
             if (diasAtuais > 0) {
                 contadorElemento.innerText = `${diasAtuais - 1} dias (uhu!)`;
@@ -153,7 +154,7 @@
         });
 
         // Inicializa o contador ao carregar a página
-        atualizarContador(11);
+        atualizarContador();
 
     </script>
 </body>
